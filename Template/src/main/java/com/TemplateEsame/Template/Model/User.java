@@ -1,25 +1,33 @@
 package com.TemplateEsame.Template.Model;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id_user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
+    private Integer idUser;
 
+    @Column(name = "username", nullable = false, length = 50)
     private String username;
-    private String password;
-    private Short id_role;
 
-    public User(String username, String password) {
+    @Column(name = "password", nullable = false, length = 255)
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "id_role", nullable = false)
+    private UserRoles role;
+
+    public User(String username, String password, UserRoles role) {
         this.username = username;
         this.password = password;
-        this.id_role = 2; // Imposta il valore predefinito per id_role
+        this.role = role; // Imposta il valore predefinito per id_role
     }
 }

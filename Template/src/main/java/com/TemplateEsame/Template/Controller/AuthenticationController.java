@@ -1,7 +1,9 @@
 package com.TemplateEsame.Template.Controller;
 import com.TemplateEsame.Template.Model.User;
 import com.TemplateEsame.Template.Model.UserDto;
+import com.TemplateEsame.Template.Model.UserRoles;
 import com.TemplateEsame.Template.Service.AuthenticationService;
+import com.TemplateEsame.Template.Service.UserRolesService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private UserRolesService userRolesService;
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserDto request) {
         if (authenticationService.userExists(request.getUsername())) {
@@ -25,7 +30,9 @@ public class AuthenticationController {
 
         String passwordHash = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt());
 
-        User user = new User(request.getUsername(), passwordHash);
+        UserRoles defaultRole = userRolesService.getRoleById(2);
+
+        User user = new User(request.getUsername(), passwordHash, defaultRole);
 
         authenticationService.Register(user);
 

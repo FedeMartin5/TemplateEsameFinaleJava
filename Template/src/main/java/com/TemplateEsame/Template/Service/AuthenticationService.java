@@ -15,7 +15,7 @@ public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
 
-    private String jwtSecret = "chiave segreta del token";
+    private String jwtSecret = "chiave segreta del token, Se vedemo Best gruppo ITS 2023/2999";
 
     public boolean userExists(String username) {
         List<User> users = userRepository.findByName(username);
